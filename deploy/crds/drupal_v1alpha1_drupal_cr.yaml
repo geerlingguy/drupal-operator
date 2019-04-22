@@ -1,0 +1,7 @@
+apiVersion: drupal.org/v1alpha1
+kind: Drupal
+metadata:
+  name: example-drupal
+spec:
+  # Add fields here
+  version: 8.6
