@@ -3,5 +3,5 @@ kind: Drupal
 metadata:
   name: example-drupal
 spec:
-  # Add fields here
   version: 8.6
+  type: production
