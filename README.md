@@ -1,5 +1,7 @@
 # Drupal Operator
 
+![](https://tokei.rs/b1/github/thom8/drupal-operator)
+
 This is a very early working POC for development of an drupal [Ansible operator](https://github.com/operator-framework/operator-sdk/blob/master/doc/proposals/ansible-operator.md), feedback is welcomed!
 
 ## Install Operator
