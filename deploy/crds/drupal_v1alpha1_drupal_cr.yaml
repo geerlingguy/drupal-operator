@@ -5,5 +5,8 @@ metadata:
 spec:
   version: 8.6
   type: production
+  git:
+    repo: https://github.com/drupal/drupal.git
+    branch: 8.7.0-rc1
   db_pvc: 1Gi
   files_pvc: 1Gi

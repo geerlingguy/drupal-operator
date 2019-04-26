@@ -76,6 +76,38 @@
               labels:
                 app: drupal
             spec:
+              initContainers:
+                - name: checkout
+                  image: alpine/git
+                  command:
+                    - git
+                    - clone
+                    - --branch 
+                    - '{{ git.branch }}'
+                    - --single-branch
+                    - --depth
+                    - '1'
+                    - '{{ git.repo }}'
+                    - /app/drupal
+                  volumeMounts:
+                  - name: drupal-code
+                    mountPath: /app/drupal/
+                - name: composer
+                  image: composer
+                  command: 
+                    - composer
+                    - install
+                    - --working-dir=/app/drupal
+                    - --no-dev
+                    - --ignore-platform-reqs
+                  env:
+                  - name: COMPOSER_CACHE_DIR
+                    value: /composer/cache
+                  volumeMounts:
+                  - name: drupal-code
+                    mountPath: /app/drupal/
+                  - name: cache-volume
+                    mountPath: /composer/cache/
               containers:
               - name: drupal
                 image: "drupal:{{ version }}-apache"
@@ -90,10 +122,12 @@
                     port: 80
                   initialDelaySeconds: 30
                 volumeMounts:
-                - mountPath: /var/www/html/sites/default/
-                  name: drupal-settings
-                - mountPath: /var/www/html/sites/default/files/
-                  name: drupal-files
+                - name: drupal-code
+                  mountPath: /var/www/html/
+                - name: drupal-settings
+                  mountPath: /var/www/html/sites/default/
+                - name: drupal-files
+                  mountPath: /var/www/html/sites/default/files/
               - name: mariadb
                 image: "mariadb"
                 ports:
@@ -111,6 +145,8 @@
                 - mountPath: /var/lib/mysql/
                   name: drupal-db
               volumes:
+                - name: drupal-code
+                  emptyDir: {}
                 - name: drupal-settings
                   configMap:
                     name: '{{ meta.name }}-drupal-config'
@@ -120,6 +156,9 @@
                 - name: drupal-db
                   persistentVolumeClaim:
                     claimName: '{{ meta.name }}-db-pvc'
+                - name: cache-volume
+                  hostPath:
+                    path: /data/composer
 
   - name: Drupal Service
     k8s:
