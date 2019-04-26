@@ -5,3 +5,5 @@ metadata:
 spec:
   version: 8.6
   type: production
+  db_pvc: 1Gi
+  files_pvc: 1Gi
