@@ -1,0 +1,5 @@
+---
+- version: v1alpha1
+  group: drupal.drupal.org
+  kind: Drupal
+  role: /opt/ansible/roles/drupal
