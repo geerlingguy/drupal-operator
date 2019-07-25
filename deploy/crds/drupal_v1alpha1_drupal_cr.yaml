@@ -3,5 +3,8 @@ kind: Drupal
 metadata:
   name: example-drupal
 spec:
-  # Add fields here
-  size: 3
+  drupal_version: '8.7'
+  files_pvc_size: 1Gi
+  manage_database: true
+  database_image: mariadb:10
+  database_pvc_size: 1Gi
