@@ -1,0 +1,70 @@
+---
+- name: MariaDB PVC.
+  k8s:
+    definition:
+      kind: PersistentVolumeClaim
+      apiVersion: v1
+      metadata:
+        name: '{{ meta.name }}-db-pvc'
+        namespace: '{{ meta.namespace }}'
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: '{{ database_pvc_size }}'
+
+- name: MariaDB Deployment.
+  k8s:
+    definition:
+      kind: Deployment
+      apiVersion: apps/v1
+      metadata:
+        name: '{{ meta.name }}-mariadb'
+        namespace: '{{ meta.namespace }}'
+      spec:
+        replicas: 1
+        selector:
+          matchLabels:
+            app: mariadb
+        template:
+          metadata:
+            labels:
+              app: mariadb
+          spec:
+            containers:
+            - name: mariadb
+              image: '{{ database_image }}'
+              ports:
+                - containerPort: 3306
+              env:
+                - name: MYSQL_DATABASE
+                  value: drupal
+                - name: MYSQL_USER
+                  value: drupal
+                - name: MYSQL_PASSWORD
+                  value: drupal
+                - name: MYSQL_RANDOM_ROOT_PASSWORD
+                  value: "yes"
+              volumeMounts:
+              - mountPath: /var/lib/mysql/
+                name: drupal-db
+            volumes:
+              - name: drupal-db
+                persistentVolumeClaim:
+                  claimName: '{{ meta.name }}-db-pvc'
+
+- name: MariaDB Service
+  k8s:
+    definition:
+      kind: Service
+      apiVersion: v1
+      metadata:
+        name: '{{ meta.name }}-mariadb'
+        namespace: '{{ meta.namespace }}'
+      spec:
+        ports:
+          - port: 3306
+            targetPort: 3306
+        selector:
+          app: 'mariadb'

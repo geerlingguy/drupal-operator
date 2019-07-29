@@ -1,0 +1,104 @@
+---
+- name: Drupal Settings ConfigMap.
+  k8s:
+    definition:
+      kind: ConfigMap
+      apiVersion: v1
+      metadata:
+        name: '{{ meta.name }}-drupal-config'
+        namespace: '{{ meta.namespace }}'
+      data:
+        settings.php: |-
+          <?php
+          
+          $databases['default']['default'] = array(
+            'database' => 'drupal',
+            'username' => 'drupal',
+            'password' => 'drupal',
+            'prefix' => '',
+            'host' => '{{ meta.name }}-mariadb',
+            'port' => '3306',
+            'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
+            'driver' => 'mysql',
+          );
+          
+          $settings['hash_salt'] = '{{ drupal_hash_salt | default(lookup('password', '/dev/null chars=ascii_letters'), true) }}';
+          $settings['trusted_host_patterns'] = ['{{ drupal_trusted_host_patterns | default('^.+$', true) }}'];
+
+- name: Drupal files PVC.
+  k8s:
+    definition:
+      kind: PersistentVolumeClaim
+      apiVersion: v1
+      metadata:
+        name: '{{ meta.name }}-files-pvc'
+        namespace: '{{ meta.namespace }}'
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: '{{ files_pvc_size }}'
+
+- name: Drupal Deployment.
+  k8s:
+    definition:
+      kind: Deployment
+      apiVersion: apps/v1
+      metadata:
+        name: '{{ meta.name }}-drupal'
+        namespace: '{{ meta.namespace }}'
+      spec:
+        replicas: 1
+        selector:
+          matchLabels:
+            app: drupal
+        template:
+          metadata:
+            labels:
+              app: drupal
+          spec:
+            containers:
+            - name: drupal
+              image: "drupal:{{ drupal_version }}-apache"
+              ports:
+                - containerPort: 80
+              livenessProbe:
+                tcpSocket:
+                  port: 80
+                initialDelaySeconds: 60
+              readinessProbe:
+                tcpSocket:
+                  port: 80
+                initialDelaySeconds: 30
+              volumeMounts:
+              - mountPath: /var/www/html/sites/default/
+                name: drupal-settings
+              - mountPath: /var/www/html/sites/default/files/
+                name: drupal-files
+            volumes:
+              - name: drupal-settings
+                configMap:
+                  name: '{{ meta.name }}-drupal-config'
+              - name: drupal-files
+                persistentVolumeClaim:
+                  claimName: '{{ meta.name }}-files-pvc'
+
+- name: Drupal Service
+  k8s:
+    definition:
+      kind: Service
+      apiVersion: v1
+      metadata:
+        name: '{{ meta.name }}'
+        namespace: '{{ meta.namespace }}'
+      spec:
+        type: NodePort
+        ports:
+          - port: 80
+            targetPort: 80
+        selector:
+          app: 'drupal'
+
+- include_tasks: database.yml
+  when: manage_database | bool

@@ -1,0 +1,12 @@
+apiVersion: drupal.drupal.org/v1alpha1
+kind: Drupal
+metadata:
+  name: example-drupal
+spec:
+  drupal_version: '8.7'
+  # drupal_hash_salt: 'provide drupal_hash_salt here'
+  # drupal_trusted_host_patterns: 'provide trusted_host_patterns here'
+  files_pvc_size: 1Gi
+  manage_database: true
+  database_image: mariadb:10
+  database_pvc_size: 1Gi
