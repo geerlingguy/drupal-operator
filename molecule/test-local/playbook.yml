@@ -60,7 +60,7 @@
         namespace: '{{ namespace }}'
         definition: '{{ custom_resource }}'
 
-    - name: Wait 60s for reconciliation to run
+    - name: Wait 5m for reconciliation to run
       k8s_facts:
         api_version: '{{ custom_resource.apiVersion }}'
         kind: '{{ custom_resource.kind }}'
@@ -70,7 +70,7 @@
       until:
       - "'Successful' in (cr | json_query('resources[].status.conditions[].reason'))"
       delay: 6
-      retries: 10
+      retries: 50
     rescue:
     - name: debug cr
       ignore_errors: yes
@@ -85,7 +85,10 @@
           resource_name=custom_resource.metadata.name
         )}}'
 
-    - name: debug drupal lookup
+    # TODO: Verify you can reach Drupal's installer at the NodePort.
+    # TODO: Maybe even run Drupal's installer?
+
+    - name: debug drupal deployment
       ignore_errors: yes
       failed_when: false
       debug:
@@ -94,7 +97,7 @@
         deploy: '{{ lookup("k8s",
           kind="Deployment",
           api_version="apps/v1",
-          namespace=test-drupal,
+          namespace=namespace,
           label_selector="app=drupal"
         )}}'
 

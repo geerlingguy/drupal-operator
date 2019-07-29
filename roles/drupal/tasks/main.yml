@@ -22,8 +22,8 @@
             'driver' => 'mysql',
           );
           
-          $settings['hash_salt'] = '{{ hash_salt | default(lookup('password', '/dev/null chars=ascii_letters'), true) }}';
-          $settings['trusted_host_patterns'] = ['{{ trusted_host_patterns | default('^.+$', true) }}'];
+          $settings['hash_salt'] = '{{ drupal_hash_salt | default(lookup('password', '/dev/null chars=ascii_letters'), true) }}';
+          $settings['trusted_host_patterns'] = ['{{ drupal_trusted_host_patterns | default('^.+$', true) }}'];
 
 - name: Drupal files PVC.
   k8s:
