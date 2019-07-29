@@ -1,5 +1,0 @@
----
-- version: v1alpha1
-  group: drupal.org
-  kind: Drupal
-  playbook: /opt/ansible/playbook.yml

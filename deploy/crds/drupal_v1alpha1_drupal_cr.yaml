@@ -1,9 +1,0 @@
-apiVersion: drupal.org/v1alpha1
-kind: Drupal
-metadata:
-  name: example-drupal
-spec:
-  version: 8.6
-  type: production
-  db_pvc: 1Gi
-  files_pvc: 1Gi
