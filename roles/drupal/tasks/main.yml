@@ -1,7 +1,4 @@
 ---
-- name: Debug info.
-  debug: var=meta
-
 - name: Drupal Settings ConfigMap.
   k8s:
     definition:
@@ -63,7 +60,7 @@
           spec:
             containers:
             - name: drupal
-              image: "drupal:{{ drupal_version }}-apache"
+              image: "{{ drupal_image }}"
               ports:
                 - containerPort: 80
               livenessProbe:
