@@ -1,8 +1,8 @@
 ---
 
 - name: Verify
-  hosts: localhost
-  connection: local
+  hosts: k8s
+  gather_facts: false
   vars:
     ansible_python_interpreter: '{{ ansible_playbook_python }}'
     deploy_dir: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/deploy"
@@ -14,9 +14,25 @@
         kind: Pod
         namespace: '{{ custom_resource.metadata.namespace }}'
       register: pods
+      delegate_to: localhost
 
     - name: Output pods
       debug: var=pods
 
-    # TODO: Verify you can reach Drupal's installer at the NodePort.
-    # TODO: Maybe even run Drupal's installer?
+    - name: Get drupal service
+      k8s:
+        kind: Service
+        api_version: v1
+        name: "{{ custom_resource.metadata.name }}"
+        namespace: "{{ custom_resource.metadata.namespace }}"
+      register: drupal_service
+      delegate_to: localhost
+
+    - name: Verify Drupal installer loads
+      uri:
+        url: "http://localhost:{{ drupal_service.result.spec.ports[0].nodePort }}/core/install.php"
+        status_code: 200
+      vars:
+        ansible_python_interpreter: python
+
+    # TODO: Maybe install Drupal?
