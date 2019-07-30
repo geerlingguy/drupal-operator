@@ -92,9 +92,6 @@
           resource_name=custom_resource.metadata.name
         )}}'
 
-    # TODO: Verify you can reach Drupal's installer at the NodePort.
-    # TODO: Maybe even run Drupal's installer?
-
     - name: debug drupal deployment
       ignore_errors: yes
       failed_when: false

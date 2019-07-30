@@ -5,6 +5,8 @@
   connection: local
   vars:
     ansible_python_interpreter: '{{ ansible_playbook_python }}'
+    deploy_dir: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/deploy"
+    custom_resource: "{{ lookup('file', '/'.join([deploy_dir, 'crds/drupal_v1alpha1_drupal_cr.yaml'])) | from_yaml }}"
   tasks:
     - name: Get all pods in {{ custom_resource.metadata.namespace }}
       k8s_facts:
@@ -15,3 +17,6 @@
 
     - name: Output pods
       debug: var=pods
+
+    # TODO: Verify you can reach Drupal's installer at the NodePort.
+    # TODO: Maybe even run Drupal's installer?
