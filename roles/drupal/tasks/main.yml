@@ -1,4 +1,7 @@
 ---
+- name: Debug info.
+  debug: var=meta
+
 - name: Drupal Settings ConfigMap.
   k8s:
     definition:
