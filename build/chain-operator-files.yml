@@ -1,0 +1,39 @@
+---
+# To run: `ansible-playbook chain-operator-files.yml`
+- name: Chain operator files together for easy deployment.
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    operator_image: geerlingguy/drupal-operator:0.0.1
+    pull_policy: Always
+    operator_file_path: "../deploy/drupal-operator.yaml"
+    operator_template: "../deploy/operator.yaml"
+
+  tasks:
+    - name: Clear out current contents of drupal-operator.yml
+      copy:
+        dest: "{{ operator_file_path }}"
+        content: ''
+        force: true
+
+    - name: Concatenate operator files into drupal-operator.yml
+      blockinfile:
+        path: "{{ operator_file_path }}"
+        block: "{{ item }}"
+        marker: "---"
+        marker_begin: ""
+        marker_end: ""
+        insertafter: "EOF"
+      with_file:
+        - "../deploy/crds/drupal_v1alpha1_drupal_crd.yaml"
+        - "../deploy/role.yaml"
+        - "../deploy/role_binding.yaml"
+        - "../deploy/service_account.yaml"
+        - "../deploy/operator.yaml"
+
+    - name: Template the drupal-operator.yaml file into drupal-operator.yml
+      template:
+        src: "{{ operator_file_path }}"
+        dest: "{{ operator_file_path }}"
