@@ -6,11 +6,11 @@
   vars:
     ansible_python_interpreter: '{{ ansible_playbook_python }}'
   tasks:
-    - name: Get all pods in {{ namespace }}
+    - name: Get all pods in {{ custom_resource.metadata.namespace }}
       k8s_facts:
         api_version: v1
         kind: Pod
-        namespace: '{{ namespace }}'
+        namespace: '{{ custom_resource.metadata.namespace }}'
       register: pods
 
     - name: Output pods
