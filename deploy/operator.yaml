@@ -34,10 +34,9 @@ spec:
           - mountPath: /tmp/ansible-operator/runner
             name: runner
           env:
+            # Watch all namespaces (cluster-scoped).
             - name: WATCH_NAMESPACE
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.namespace
+              value: ""
             - name: POD_NAME
               valueFrom:
                 fieldRef:
