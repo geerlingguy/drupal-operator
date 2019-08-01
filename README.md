@@ -16,29 +16,29 @@ Then you can create instances of Drupal in any namespace, for example:
 
   1. Create a file named `my-drupal-site.yml` with the following contents:
 
-         ```
-         ---
-         apiVersion: drupal.drupal.org/v1alpha1
-         kind: Drupal
-         metadata:
-           name: my-drupal-site
-           namespace: default
-         spec:
-           drupal_image: 'drupal:8.7-apache'
-           # You should generate your own hash salt, e.g. `Crypt::randomBytesBase64(55)`.
-           drupal_hash_salt: 'provide hash_salt here'
-           drupal_trusted_host_patterns: 'provide trusted_host_patterns here'
-           files_pvc_size: 1Gi
-           manage_database: true
-           database_image: mariadb:10
-           database_pvc_size: 1Gi
-         ```
+     ```
+     ---
+     apiVersion: drupal.drupal.org/v1alpha1
+     kind: Drupal
+     metadata:
+       name: my-drupal-site
+       namespace: default
+     spec:
+       drupal_image: 'drupal:8.7-apache'
+       # You should generate your own hash salt, e.g. `Crypt::randomBytesBase64(55)`.
+       drupal_hash_salt: 'provide hash_salt here'
+       drupal_trusted_host_patterns: 'provide trusted_host_patterns here'
+       files_pvc_size: 1Gi
+       manage_database: true
+       database_image: mariadb:10
+       database_pvc_size: 1Gi
+     ```
 
   2. Use `kubectl` to create the Drupal site in your cluster:
 
-         ```
-         kubectl apply -f my-drupal-site.yml
-         ```
+     ```
+     kubectl apply -f my-drupal-site.yml
+     ```
 
 > You can also deploy `Drupal` applications into other namespaces by changing `metadata.namespace`, or deploy multiple `Drupal` instances into the same namespace by changing `metadata.name`.
 
