@@ -24,7 +24,7 @@
         resource_name=custom_resource.metadata.name
       )}}"
 
-  - name: Wait 60s for reconciliation to run
+  - name: Wait 5m for reconciliation to run
     k8s_facts:
       api_version: 'v1alpha1'
       kind: 'Drupal'
@@ -33,7 +33,7 @@
     register: reconcile_cr
     until:
     - "'Successful' in (reconcile_cr | json_query('resources[].status.conditions[].reason'))"
-    delay: 6
-    retries: 10
+    delay: 5
+    retries: 60
 
 - import_playbook: '{{ playbook_dir }}/../default/asserts.yml'
