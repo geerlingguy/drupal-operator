@@ -25,7 +25,7 @@
       )}}"
 
   - name: Wait 5m for reconciliation to run
-    k8s_facts:
+    k8s_info:
       api_version: 'v1alpha1'
       kind: 'Drupal'
       namespace: '{{ custom_resource.metadata.namespace }}'
