@@ -32,6 +32,10 @@
       uri:
         url: "http://localhost:{{ drupal_service.result.spec.ports[0].nodePort }}/core/install.php"
         status_code: 200
+      register: result
+      until: (result.status|default(-1)) == 200
+      retries: 60
+      delay: 5
       vars:
         ansible_python_interpreter: python
 
