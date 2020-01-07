@@ -100,4 +100,23 @@
         selector:
           app: 'drupal'
 
+- name: Drupal Ingress
+  k8s:
+    state: "{{ 'present' if manage_ingress else 'absent' }}"
+    definition:
+      apiVersion: extensions/v1beta1
+      kind: Ingress
+      metadata:
+        name: '{{ meta.name }}'
+        namespace: '{{ meta.namespace }}'
+      spec:
+        rules:
+        - host: '{{ drupal_hostname }}'
+          http:
+            paths:
+            - path: /
+              backend:
+                serviceName: '{{ meta.name }}'
+                servicePort: 80
+
 - include_tasks: database.yml

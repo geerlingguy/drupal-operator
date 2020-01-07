@@ -32,6 +32,10 @@ Then you can create instances of Drupal in any namespace, for example:
        database_image: mariadb:10
        database_pvc_size: 1Gi
        database_password: change-me
+       
+       # Set this to 'true' to have this operator manage Ingress for the site.
+       manage_ingress: true
+       drupal_hostname: mysite.com
      ```
 
   2. Use `kubectl` to create the Drupal site in your cluster:

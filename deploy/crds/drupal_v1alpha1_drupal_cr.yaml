@@ -26,3 +26,7 @@ spec:
   manage_database: true
   database_image: mariadb:10
   database_pvc_size: 1Gi
+
+  # Set this to 'true' to have this operator manage Ingress for the site.
+  manage_ingress: true
+  drupal_hostname: example-drupal.test
