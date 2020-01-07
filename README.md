@@ -24,7 +24,7 @@ Then you can create instances of Drupal in any namespace, for example:
        name: my-drupal-site
        namespace: default
      spec:
-       drupal_image: 'drupal:8.7-apache'
+       drupal_image: 'drupal:8.8-apache'
        # You should generate your own hash salt, e.g. `Crypt::randomBytesBase64(55)`.
        drupal_hash_salt: 'provide hash_salt here'
        drupal_trusted_host_patterns: 'provide trusted_host_patterns here'

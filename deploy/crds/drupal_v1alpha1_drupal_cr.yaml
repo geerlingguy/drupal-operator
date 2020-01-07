@@ -4,7 +4,7 @@ metadata:
   name: example-drupal
   namespace: example-drupal
 spec:
-  drupal_image: 'drupal:8.7-apache'
+  drupal_image: 'drupal:8.8-apache'
   # You should generate your own hash salt, e.g. `Crypt::randomBytesBase64(55)`.
   drupal_hash_salt: 'fe918c992fb1bcfa01f32303c8b21f3d0a0'
   # drupal_trusted_host_patterns: 'provide trusted_host_patterns here'
