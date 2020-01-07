@@ -1,9 +1,10 @@
 ---
-
-- name: Build Operator in Kubernetes docker container
+- name: Build Operator in Kind container
   hosts: k8s
+
   vars:
     image_name: drupal.drupal.org/drupal-operator:testing
+
   tasks:
   # using command so we don't need to install any dependencies
   - name: Get existing image hash
@@ -19,14 +20,18 @@
 - name: Converge
   hosts: localhost
   connection: local
+
   vars:
     ansible_python_interpreter: '{{ ansible_playbook_python }}'
     deploy_dir: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/deploy"
     pull_policy: Never
     operator_image: drupal.drupal.org/drupal-operator:testing
     custom_resource: "{{ lookup('file', '/'.join([deploy_dir, 'crds/drupal_v1alpha1_drupal_cr.yaml'])) | from_yaml }}"
+
   tasks:
+
   - block:
+
     - name: Delete the Operator Deployment
       k8s:
         state: absent
@@ -78,7 +83,9 @@
       - "'Successful' in (cr | json_query('resources[].status.conditions[].reason'))"
       delay: 6
       retries: 50
+
     rescue:
+
     - name: debug cr
       ignore_errors: yes
       failed_when: false
