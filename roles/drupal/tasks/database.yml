@@ -1,6 +1,11 @@
 ---
+- name: Specify whether database resources should be present.
+  set_fact:
+    db_resource_state: "{{ 'present' if manage_database else 'absent' }}"
+
 - name: MariaDB PVC.
   k8s:
+    state: '{{ db_resource_state }}'
     definition:
       kind: PersistentVolumeClaim
       apiVersion: v1
@@ -16,6 +21,7 @@
 
 - name: MariaDB Deployment.
   k8s:
+    state: '{{ db_resource_state }}'
     definition:
       kind: Deployment
       apiVersion: apps/v1
@@ -56,6 +62,7 @@
 
 - name: MariaDB Service
   k8s:
+    state: '{{ db_resource_state }}'
     definition:
       kind: Service
       apiVersion: v1
