@@ -39,11 +39,11 @@
                 - containerPort: 3306
               env:
                 - name: MYSQL_DATABASE
-                  value: drupal
+                  value: '{{ database_name }}'
                 - name: MYSQL_USER
-                  value: drupal
+                  value: '{{ database_username }}'
                 - name: MYSQL_PASSWORD
-                  value: drupal
+                  value: '{{ database_password }}'
                 - name: MYSQL_RANDOM_ROOT_PASSWORD
                   value: "yes"
               volumeMounts:

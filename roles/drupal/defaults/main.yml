@@ -1,2 +1,17 @@
 ---
-# defaults file for drupal
+drupal_image: 'drupal:8.8-apache'
+# You should generate your own hash salt, e.g. `Crypt::randomBytesBase64(55)`.
+drupal_hash_salt: ''
+drupal_trusted_host_patterns: ''
+files_pvc_size: 1Gi
+
+# Database options (will be used regardless of database location).
+database_name: drupal
+database_username: drupal
+database_password: drupal
+database_host: 'example-drupal-mariadb'
+
+# Set this to 'true' to use a single-pod database managed by this operator.
+manage_database: true
+database_image: mariadb:10
+database_pvc_size: 1Gi

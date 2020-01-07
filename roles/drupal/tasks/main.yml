@@ -12,11 +12,11 @@
           <?php
           
           $databases['default']['default'] = array(
-            'database' => 'drupal',
-            'username' => 'drupal',
-            'password' => 'drupal',
+            'database' => '{{ database_name }}',
+            'username' => '{{ database_username }}',
+            'password' => '{{ database_password }}',
             'prefix' => '',
-            'host' => '{{ meta.name }}-mariadb',
+            'host' => '{{ database_host }}',
             'port' => '3306',
             'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
             'driver' => 'mysql',

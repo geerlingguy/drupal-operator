@@ -24,14 +24,14 @@ Then you can create instances of Drupal in any namespace, for example:
        name: my-drupal-site
        namespace: default
      spec:
+       # The container image to use for the Drupal deployment.
        drupal_image: 'drupal:8.8-apache'
-       # You should generate your own hash salt, e.g. `Crypt::randomBytesBase64(55)`.
-       drupal_hash_salt: 'provide hash_salt here'
-       drupal_trusted_host_patterns: 'provide trusted_host_patterns here'
-       files_pvc_size: 1Gi
+
+       # Set this to 'true' to use a single-pod database managed by this operator.
        manage_database: true
        database_image: mariadb:10
        database_pvc_size: 1Gi
+       database_password: change-me
      ```
 
   2. Use `kubectl` to create the Drupal site in your cluster:
@@ -39,6 +39,8 @@ Then you can create instances of Drupal in any namespace, for example:
      ```
      kubectl apply -f my-drupal-site.yml
      ```
+
+There are many other options you can provide in the `spec`, to control the deployment and how it integrates with external services (e.g. set `manage_database` to `false` and override the `database_` options to integrate with a separate database backend).
 
 > You can also deploy `Drupal` applications into other namespaces by changing `metadata.namespace`, or deploy multiple `Drupal` instances into the same namespace by changing `metadata.name`.
 
@@ -80,19 +82,24 @@ If everything is deployed correctly, commit the updated version and push it up t
 
 ### Testing
 
-#### Local tests with Molecule and KIND
-
-Ensure you have the testing dependencies installed (in addition to Docker):
-
-    pip install docker molecule openshift jmespath
-
-Run the local molecule test scenario:
+#### Testing in Docker (standalone)
 
     molecule test -s test-local
 
-#### Local tests with minikube
+This environment is meant for headless testing (e.g. in a CI environment, or when making smaller changes which don't need to be verified through a web interface). It is difficult to test things like Drupal's front-end or connecting other applications on your local machine to services running inside the cluster, since it is inside a Docker container with no static IP address.
 
-TODO.
+#### Testing in Minikube
+
+    minikube start
+    minikube addons enable ingress
+    molecule test -s test-minikube
+
+[Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) is a more full-featured test environment running inside a full VM on your computer, with an assigned IP address. This makes it easier to test things like NodePort services and Ingress from outside the Kubernetes cluster (e.g. in a browser on your computer).
+
+Once the operator is deployed, you can visit the Drupal in your browser by following these steps:
+
+  1. Make sure you have an entry like `IP_ADDRESS  example-drupal.test` in your `/etc/hosts` file. (Get the IP address with `minikube ip`.)
+  2. Visit `http://example-drupal.test/` in your browser.
 
 ## Authors
 

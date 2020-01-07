@@ -10,7 +10,7 @@ lint:
   name: yamllint
   enabled: False
 platforms:
-- name: test-cluster
+- name: test-minikube
   groups:
   - k8s
 provisioner:
@@ -25,7 +25,7 @@ provisioner:
   env:
     ANSIBLE_ROLES_PATH: ${MOLECULE_PROJECT_DIRECTORY}/roles
 scenario:
-  name: test-cluster
+  name: test-minikube
   test_sequence:
     - lint
     - destroy
