@@ -70,7 +70,13 @@ Verify the `build/chain-operator-files.yml` playbook has the most recent version
 
     ansible-playbook chain-operator-files.yml
 
-After it is built, test it on a local cluster (e.g. `minikube start` then `kubectl apply -f deploy/drupal-operator.yaml`), then commit the updated version and push it up to GitHub, tagging a new repository release with the same tag as the Docker image.
+After it is built, test it on a local cluster:
+
+  1. `minikube start`
+  2. `kubectl apply -f deploy/drupal-operator.yaml`
+  3. `kubectl apply -f deploy/crds/drupal_v1alpha1_drupal_cr.yaml`
+
+If everything is deployed correctly, commit the updated version and push it up to GitHub, tagging a new repository release with the same tag as the Docker image.
 
 ### Testing
 
