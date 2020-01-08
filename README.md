@@ -63,12 +63,12 @@ Each of these must be appropriately built in preparation for a new tag:
 
 Run the following command inside this directory:
 
-    operator-sdk build geerlingguy/drupal-operator:0.0.1
+    operator-sdk build geerlingguy/drupal-operator:0.0.2
 
 Then push the generated image to Docker Hub:
 
     docker login -u geerlingguy
-    docker push geerlingguy/drupal-operator:0.0.1
+    docker push geerlingguy/drupal-operator:0.0.2
 
 #### Build a new version of the `drupal-operator.yaml` file
 

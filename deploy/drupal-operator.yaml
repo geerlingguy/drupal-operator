@@ -47,6 +47,12 @@ rules:
   verbs:
   - '*'
 - apiGroups:
+  - extensions
+  resources:
+  - ingresses
+  verbs:
+  - '*'
+- apiGroups:
   - monitoring.coreos.com
   resources:
   - servicemonitors
@@ -120,14 +126,14 @@ spec:
           - /usr/local/bin/ao-logs
           - /tmp/ansible-operator/runner
           - stdout
-          image: "geerlingguy/drupal-operator:0.0.1"
+          image: "geerlingguy/drupal-operator:0.0.2"
           imagePullPolicy: "Always"
           volumeMounts:
           - mountPath: /tmp/ansible-operator/runner
             name: runner
             readOnly: true
         - name: operator
-          image: "geerlingguy/drupal-operator:0.0.1"
+          image: "geerlingguy/drupal-operator:0.0.2"
           imagePullPolicy: "Always"
           volumeMounts:
           - mountPath: /tmp/ansible-operator/runner
