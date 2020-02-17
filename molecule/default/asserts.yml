@@ -37,6 +37,6 @@
       retries: 60
       delay: 5
       vars:
-        ansible_python_interpreter: python
+        ansible_python_interpreter: python3
 
     # TODO: Maybe install Drupal?
