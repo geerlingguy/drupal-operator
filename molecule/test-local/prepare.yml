@@ -2,8 +2,10 @@
 - name: Prepare kubernetes environment
   hosts: k8s
   gather_facts: no
+
   vars:
     kubeconfig: "{{ lookup('env', 'KUBECONFIG') }}"
+
   tasks:
     - name: delete the kubeconfig if present
       file:

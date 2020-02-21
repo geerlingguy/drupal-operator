@@ -39,22 +39,22 @@
               app: mariadb
           spec:
             containers:
-            - name: mariadb
-              image: '{{ database_image }}'
-              ports:
-                - containerPort: 3306
-              env:
-                - name: MYSQL_DATABASE
-                  value: '{{ database_name }}'
-                - name: MYSQL_USER
-                  value: '{{ database_username }}'
-                - name: MYSQL_PASSWORD
-                  value: '{{ database_password }}'
-                - name: MYSQL_RANDOM_ROOT_PASSWORD
-                  value: "yes"
-              volumeMounts:
-              - mountPath: /var/lib/mysql/
-                name: drupal-db
+              - name: mariadb
+                image: '{{ database_image }}'
+                ports:
+                  - containerPort: 3306
+                env:
+                  - name: MYSQL_DATABASE
+                    value: '{{ database_name }}'
+                  - name: MYSQL_USER
+                    value: '{{ database_username }}'
+                  - name: MYSQL_PASSWORD
+                    value: '{{ database_password }}'
+                  - name: MYSQL_RANDOM_ROOT_PASSWORD
+                    value: "yes"
+                volumeMounts:
+                  - mountPath: /var/lib/mysql/
+                    name: drupal-db
             volumes:
               - name: drupal-db
                 persistentVolumeClaim:

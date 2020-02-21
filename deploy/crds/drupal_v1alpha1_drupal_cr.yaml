@@ -1,3 +1,4 @@
+---
 apiVersion: drupal.drupal.org/v1alpha1
 kind: Drupal
 metadata:
