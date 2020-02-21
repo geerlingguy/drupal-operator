@@ -67,7 +67,6 @@ Run the following command inside this directory:
 
 Then push the generated image to Docker Hub:
 
-    docker login -u geerlingguy
     docker push geerlingguy/drupal-operator:0.1.0
 
 #### Build a new version of the `drupal-operator.yaml` file
