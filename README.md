@@ -77,9 +77,13 @@ Verify the `build/chain-operator-files.yml` playbook has the most recent version
 
 After it is built, test it on a local cluster:
 
-  1. `minikube start`
-  2. `kubectl apply -f deploy/drupal-operator.yaml`
-  3. `kubectl apply -f deploy/crds/drupal_v1alpha1_drupal_cr.yaml`
+    minikube start
+    minikube addons enable ingress
+    kubectl apply -f deploy/drupal-operator.yaml
+    kubectl create namespace example-drupal
+    kubectl apply -f deploy/crds/drupal_v1alpha1_drupal_cr.yaml
+    <test everything>
+    minikube delete
 
 If everything is deployed correctly, commit the updated version and push it up to GitHub, tagging a new repository release with the same tag as the Docker image.
 
