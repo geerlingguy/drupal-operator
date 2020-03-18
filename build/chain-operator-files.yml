@@ -6,7 +6,7 @@
   gather_facts: false
 
   vars:
-    operator_image: geerlingguy/drupal-operator:0.1.0
+    operator_image: geerlingguy/drupal-operator:0.1.1
     pull_policy: Always
     operator_file_path: "../deploy/drupal-operator.yaml"
     operator_template: "../deploy/operator.yaml"
