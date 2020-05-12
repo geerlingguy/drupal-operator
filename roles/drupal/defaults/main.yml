@@ -6,10 +6,13 @@ drupal_trusted_host_patterns: ''
 files_pvc_size: 1Gi
 
 # Database options (will be used regardless of database location).
+database_driver: mysql
 database_name: drupal
 database_username: drupal
 database_password: drupal
+database_prefix: ''
 database_host: 'example-drupal-mariadb'
+database_port: 3306
 
 # Set this to 'true' to use a single-pod database managed by this operator.
 manage_database: true
