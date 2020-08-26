@@ -16,12 +16,12 @@
     - name: Fetch the kubeconfig
       fetch:
         dest: '{{ kubeconfig }}'
-        flat: yes
+        flat: true
         src: /root/.kube/config
 
     - name: Change the kubeconfig port to the proper value
       replace:
-        regexp: 8443
+        regexp: '8443'
         replace: "{{ lookup('env', 'KIND_PORT') }}"
         path: '{{ kubeconfig }}'
         mode: 0644
