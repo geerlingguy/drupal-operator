@@ -8,7 +8,7 @@ before_install:
   - curl https://gist.githubusercontent.com/geerlingguy/ce883ad4aec6a5f1187ef93bd338511e/raw/36612d28981d92863f839c5aefe5b7dd7193d6c6/travis-ci-docker-upgrade.sh | sudo bash
 
 install:
-  - pip install docker molecule yamllint ansible-lint openshift jmespath
+  - pip install ansible molecule[docker] yamllint ansible-lint docker openshift jmespath
 
 script:
   - molecule test -s test-local
